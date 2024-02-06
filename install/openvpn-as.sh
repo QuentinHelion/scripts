@@ -38,13 +38,13 @@ sh sacli --user  --key "type" --value "user_connect" UserPropPut
 sh sacli --user "$DEFAULT_ADMIN" --new_pass "$DEFAULT_PASSW" SetLocalPassword
 
 
-./sacli --user "$DEFAULT_GROUP" --key "type" --value "group" UserPropPut
-./sacli --user "$DEFAULT_GROUP" --key "group_declare" --value "true" UserPropPut
+sh sacli --user "$DEFAULT_GROUP" --key "type" --value "group" UserPropPut
+sh sacli --user "$DEFAULT_GROUP" --key "group_declare" --value "true" UserPropPut
 
-./sacli --user "$DEFAULT_ADMIN" --key "conn_group" --value "$DEFAULT_GROUP" UserPropPut
+sh sacli --user "$DEFAULT_ADMIN" --key "conn_group" --value "$DEFAULT_GROUP" UserPropPut
 
 
-./sacli start
+sh sacli start
 
 # ==== Functions ====
 create_user() {
