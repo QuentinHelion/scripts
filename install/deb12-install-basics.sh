@@ -15,5 +15,5 @@ apt install -y git vim sudo curl wget > /dev/null 2>&1
 # Sudo config
 usermod -aG sudo debian
 
-
+echo "alias ll='ls -la'" >> /etc/bash.bashrc
 
