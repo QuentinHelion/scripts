@@ -15,7 +15,7 @@ fi
 apt-get update > /dev/null 2>&1
 apt-get upgrade -y > /dev/null 2>&1
 
-apt update && apt -y install ca-certificates wget net-tools gnupg > /dev/null 2>&1
+apt -y install ca-certificates wget net-tools gnupg > /dev/null 2>&1
 wget https://as-repository.openvpn.net/as-repo-public.asc -qO /etc/apt/trusted.gpg.d/as-repository.asc > /dev/null 2>&1
 
 echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/as-repository.asc] http://as-repository.openvpn.net/as/debian bookworm main">/etc/apt/sources.list.d/openvpn-as-repo.list 
@@ -26,6 +26,7 @@ cat /usr/local/openvpn_as/init.log
 
 
 # ==== Configuration part ====
+echo "Configuration..."
 cd /usr/local/openvpn_as/scripts/
 
 DEFAULT_ADMIN="Op3n4dmin"
@@ -45,7 +46,7 @@ sh sacli --user "$DEFAULT_ADMIN" --new_pass "$DEFAULT_PASSW" SetLocalPassword
 sh sacli --user "$DEFAULT_GROUP" --key "type" --value "group" UserPropPut
 sh sacli --user "$DEFAULT_GROUP" --key "group_declare" --value "true" UserPropPut
 
-
+sh sacli --user "$ADMIN_GROUP" --key "type" --value "group" UserPropPut
 sh sacli --usergroup "$ADMIN_GROUP" --key "prop_superuser" --value "true" UserGroupPropPut
 sh sacli --usergroup "$ADMIN_GROUP" --key "prop_google_auth_enable" --value "true" UserGroupPropPut
 
