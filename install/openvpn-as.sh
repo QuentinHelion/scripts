@@ -28,9 +28,9 @@ cat /usr/local/openvpn_as/init.log
 # ==== Configuration part ====
 cd /usr/local/openvpn_as/scripts/
 
-DEFAULT_ADMIN = "Op3n4dmin"
-DEFAULT_PASSW = "4dmin2024"
-DEFAULT_GROUP = "default_group"
+DEFAULT_ADMIN="Op3n4dmin"
+DEFAULT_PASSW="4dmin2024"
+DEFAULT_GROUP="default_group"
 
 create_user "$DEFAULT_ADMIN"
 
