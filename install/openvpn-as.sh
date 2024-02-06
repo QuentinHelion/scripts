@@ -32,7 +32,10 @@ DEFAULT_ADMIN="Op3n4dmin"
 DEFAULT_PASSW="4dmin2024"
 DEFAULT_GROUP="default_group"
 
-create_user "$DEFAULT_ADMIN"
+#create_user "$DEFAULT_ADMIN"
+
+adduser --gecos "$DEFAULT_ADMIN" "$DEFAULT_PASSW"
+echo "$DEFAULT_ADMIN:$DEFAULT_PASSW"
 
 sh sacli --user  --key "type" --value "user_connect" UserPropPut
 sh sacli --user "$DEFAULT_ADMIN" --new_pass "$DEFAULT_PASSW" SetLocalPassword
@@ -47,8 +50,7 @@ sh sacli --user "$DEFAULT_ADMIN" --key "conn_group" --value "$DEFAULT_GROUP" Use
 sh sacli start
 
 # ==== Functions ====
-create_user() {
-    adduser --gecos "$1" "$2"
-
-    echo "$1:$password" | chpasswd
-}
+#create_user() {
+#    adduser --gecos "$1" "$2"
+#   echo "$1:$password" | chpasswd
+#}
