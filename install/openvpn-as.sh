@@ -47,17 +47,15 @@ sh sacli --user "$DEFAULT_GROUP" --key "type" --value "group" UserPropPut
 sh sacli --user "$DEFAULT_GROUP" --key "group_declare" --value "true" UserPropPut
 
 sh sacli --user "$ADMIN_GROUP" --key "type" --value "group" UserPropPut
-sh sacli --user "$ADMIN_GROUP" --key "group_declare" --value "true" UserPropPut
+sh sacli --user "$ADMIN_GROUP" --key "group_declare" --value "true" UserPropPut # set this group as admin
 sh sacli --user "$ADMIN_GROUP" --key "prop_superuser" --value "true" UserPropPut
-sh sacli --user "$ADMIN_GROUP" --key "prop_google_auth_enable" --value "true" UserPropPut
-
 
 # Add user to admin group 
 sh sacli --user "$DEFAULT_ADMIN" --key "conn_group" --value "$ADMIN_GROUP" UserPropPut
 
 # Setup MFA for default group
 sh sacli --user "$DEFAULT_GROUP" --key "prop_google_auth" --value "true" UserPropPut
-
+sh sacli --user "$ADMIN_GROUP" --key "prop_google_auth" --value "true" UserPropPut
 
 sh sacli start
 
