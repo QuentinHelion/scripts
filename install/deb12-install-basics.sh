@@ -16,4 +16,5 @@ apt install -y git vim sudo curl wget > /dev/null 2>&1
 usermod -aG sudo debian
 
 echo "alias ll='ls -la'" >> /etc/bash.bashrc
+echo "debian ALL=(ALL:ALL) ALL" >> /etc/sudoers
 
