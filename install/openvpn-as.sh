@@ -31,26 +31,31 @@ cd /usr/local/openvpn_as/scripts/
 DEFAULT_ADMIN="Op3n4dmin"
 DEFAULT_PASSW="4dmin2024"
 DEFAULT_GROUP="default_group"
+ADMIN_GROUP="admins_group"
 
-#create_user "$DEFAULT_ADMIN"
-
+# Create new user
 adduser --gecos "$DEFAULT_ADMIN" "$DEFAULT_PASSW"
-echo "$DEFAULT_ADMIN:$DEFAULT_PASSW"
+echo "$DEFAULT_ADMIN:$DEFAULT_PASSW" 
 
-sh sacli --user  --key "type" --value "user_connect" UserPropPut
+sh sacli --user  --key "type" --value "user_connect" UserPropPut # declare user for 
 sh sacli --user "$DEFAULT_ADMIN" --new_pass "$DEFAULT_PASSW" SetLocalPassword
 
 
+# create default groups
 sh sacli --user "$DEFAULT_GROUP" --key "type" --value "group" UserPropPut
 sh sacli --user "$DEFAULT_GROUP" --key "group_declare" --value "true" UserPropPut
 
-sh sacli --user "$DEFAULT_ADMIN" --key "conn_group" --value "$DEFAULT_GROUP" UserPropPut
+
+sh sacli --usergroup "$ADMIN_GROUP" --key "prop_superuser" --value "true" UserGroupPropPut
+sh sacli --usergroup "$ADMIN_GROUP" --key "prop_google_auth_enable" --value "true" UserGroupPropPut
+
+
+# Add user to admin group 
+sh sacli --user "$DEFAULT_ADMIN" --key "conn_group" --value "$ADMIN_GROUP" UserPropPut
+
+# Setup MFA for default group
+sh sacli --user "$DEFAULT_GROUP" --key "prop_google_auth" --value "true" UserPropPut
 
 
 sh sacli start
 
-# ==== Functions ====
-#create_user() {
-#    adduser --gecos "$1" "$2"
-#   echo "$1:$password" | chpasswd
-#}
