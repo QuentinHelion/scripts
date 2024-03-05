@@ -29,11 +29,7 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-# Check if $1 exists
-if [ -z "$1" ]; then
-	display_help
-	exit 1
-fi
+
 
 # Help function
 display_help() {
@@ -43,6 +39,12 @@ display_help() {
     echo "  -r | --reinstall"
     exit 0;
 }
+
+# Check if $1 exists
+if [ -z "$1" ]; then
+	display_help
+	exit 1
+fi
 
 
 install_all() {
@@ -63,11 +65,7 @@ install_all() {
     # MySQL setup
     # mysql_secure_installation 
 
-    mysql -u root -p"$DB_ROOT_PASSWORD" -e
-        "CREATE DATABASE $DB_NAME_NEXTCLOUD;
-        CREATE DATABASE $DB_NAME_DOLIBARR;
-        GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'localhost';
-        FLUSH PRIVILEGES;"
+    mysql -u root -p"$DB_ROOT_PASSWORD" -e "CREATE DATABASE $DB_NAME_NEXTCLOUD; CREATE DATABASE $DB_NAME_DOLIBARR; GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'localhost'; FLUSH PRIVILEGES;"
 
 
     # NextCloud Installation
@@ -79,7 +77,7 @@ install_all() {
 
     # Create a virtual host configuration file
     touch /etc/apache2/sites-available/$DOMAIN_NEXTCLOUD.conf
-    echo "<VirtualHost *:80>
+    echo "<VirtualHost *:80> 
         ServerAdmin webmaster@$DOMAIN_NEXTCLOUD
         ServerName $DOMAIN_NEXTCLOUD
         DocumentRoot $DOCUMENT_ROOT_NEXTCLOUD
@@ -117,12 +115,14 @@ install_all() {
             </VirtualHost>" >> /etc/apache2/sites-available/$DOMAIN_DOLIBARR.conf
 
 
-    a2enmod headers env rewrite
-    cd /etc/apache2/sites-available/
-    a2dissite 000-default.conf
-    a2ensite $DOMAIN_DOLIBARR.conf
-    a2ensite $DOMAIN_NEXTCLOUD.conf
-    systemctl restart apache2
+    a2enmod headers env rewrite >> /dev/null
+    cd /etc/apache2/sites-available/ 
+    a2dissite 000-default.conf >> /dev/null
+    a2ensite $DOMAIN_DOLIBARR.conf >> /dev/null
+    a2ensite $DOMAIN_NEXTCLOUD.conf >> /dev/null
+    systemctl restart apache2 >> /dev/null
+
+    echo "Installation succed"
 }
 
 uninstall_all() {
@@ -130,9 +130,7 @@ uninstall_all() {
     cd /var/www/
     rm -rf nextcloud/ dolibarr/
 
-    mysql -u root -p"$DB_ROOT_PASSWORD" -e
-        "DROP DATABASE $DB_NAME_NEXTCLOUD;
-        DROP DATABASE $DB_NAME_DOLIBARR;"
+    mysql -u root -p"$DB_ROOT_PASSWORD" -e "DROP DATABASE $DB_NAME_NEXTCLOUD;DROP DATABASE $DB_NAME_DOLIBARR;"
 
     a2dismod headers env rewrite
     cd /etc/apache2/sites-available/
